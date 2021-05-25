@@ -1,12 +1,12 @@
 package com.flipkart.exception;
 
-public class InvalidCourseId extends Exception{
+public class InvalidCredentialsException extends Exception{
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public InvalidCourseId(String exception) {
+	public InvalidCredentialsException(String exception) {
 		super();
 		this.exception = exception;
 	}
