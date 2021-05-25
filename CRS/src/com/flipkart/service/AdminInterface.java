@@ -9,5 +9,7 @@ public interface AdminInterface {
 	public void removeCourse(String courseId);
 	public void addNewProfessor(Professor details);
 	public void addNewStudent(Student details);
+	public void removeStudent(String id);
+	public void removeProfessor(String id);
 	public void generateReportCard(String studentId);
 }
