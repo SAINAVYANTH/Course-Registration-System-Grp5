@@ -5,20 +5,22 @@ public class InvalidCourseId extends Exception{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
-	public InvalidCourseId(String exception) {
+	private String course_id;
+	public InvalidCourseId(String course_id) {
 		super();
-		this.exception = exception;
+		this.course_id = course_id;
 	}
 
-	private String exception;
-
-	public String getException() {
-		return exception;
+	public String getCourseId() {
+		return course_id;
 	}
 
-	public void setException(String exception) {
-		this.exception = exception;
+	public void setException(String course_id) {
+		this.course_id = course_id;
 	}
-	
+	@Override
+	public String getMessage() 
+	{
+		return "Registration for Course with course id: " + course_id + " not found.";
+	}
 }
