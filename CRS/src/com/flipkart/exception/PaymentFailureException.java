@@ -2,13 +2,13 @@ package com.flipkart.exception;
 
 import com.flipkart.bean.Payment;
 
-public class PaymentFailure extends Exception{
+public class PaymentFailureException extends Exception{
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public PaymentFailure(String exception, Payment paymentDetails) {
+	public PaymentFailureException(String exception, Payment paymentDetails) {
 		super();
 		this.exception = exception;
 		this.paymentDetails = paymentDetails;

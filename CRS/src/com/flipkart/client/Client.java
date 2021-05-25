@@ -3,7 +3,7 @@ package com.flipkart.client;
 import java.util.Scanner;
 
 import com.flipkart.bean.UserLogin;
-import com.flipkart.exception.InvalidCredentials;
+import com.flipkart.exception.InvalidCredentialsException;
 import com.flipkart.utils.LoginUtils;
 import com.flipkart.client.clientProfessor;
 public class Client {

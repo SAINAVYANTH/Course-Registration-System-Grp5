@@ -2,8 +2,8 @@ package com.flipkart.exception;
 
 import com.flipkart.bean.CourseRegistration;
 
-public class RegistrationFailure extends Exception{
-	public RegistrationFailure(String exception, CourseRegistration registrationDetails) {
+public class RegistrationFailureException extends Exception{
+	public RegistrationFailureException(String exception, CourseRegistration registrationDetails) {
 		super();
 		this.exception = exception;
 		this.registrationDetails = registrationDetails;
