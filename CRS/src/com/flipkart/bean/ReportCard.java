@@ -5,14 +5,17 @@ import java.util.Hashtable;
 import com.flipkart.constants.Grade;
 
 public class ReportCard {
-	private String studentId;
+	private int studentId;
 	private String semester;
 	private Hashtable<String, Grade> grades;
-	
-	public String getStudentId() {
+	public ReportCard(int studentId,Hashtable<String, Grade> grades) {
+		this.studentId=studentId;
+		this.grades=grades;
+	}
+	public int getStudentId() {
 		return studentId;
 	}
-	public void setStudentId(String studentId) {
+	public void setStudentId(int studentId) {
 		this.studentId = studentId;
 	}
 	public String getSemester() {

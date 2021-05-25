@@ -44,9 +44,8 @@ public class StudentImplementation implements StudentInterface {
 
 	@Override
 	public boolean addCourse(int studentId, String courseId) throws InvalidCourseId, RegistrationFailure, SQLException{
-		System.out.println(studentId);
-		System.out.println(courseId);
-		if (studentDaoInterface.numOfRegisteredCourses(studentId) >= 3)
+		
+		if (studentDaoInterface.numOfRegisteredCourses(studentId) >= 4)
 		{	
 			throw new RegistrationFailure();
 		}
@@ -72,9 +71,10 @@ public class StudentImplementation implements StudentInterface {
 	}
 
 	@Override
-	public Course[] viewRegisteredCourses(int studentId) {
-		// TODO Auto-generated method stub
-		return null;
+	public ReportCard viewRegisteredCourses(int studentId) throws SQLException{
+		
+		return studentDaoInterface.viewRegisteredCourses(studentId);
+		
 	}
 
 	@Override

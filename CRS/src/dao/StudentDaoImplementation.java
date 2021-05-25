@@ -4,10 +4,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Hashtable;
 
 import com.flipkart.bean.Course;
 import com.flipkart.bean.CourseRegistration;
 import com.flipkart.bean.ReportCard;
+import com.flipkart.constants.Grade;
 import com.flipkart.constants.SQLQueries;
 import com.flipkart.constants.Status;
 import com.flipkart.utils.DBUtils;
@@ -41,7 +43,7 @@ public class StudentDaoImplementation implements StudentDaoInterface {
 			stmt = conn.prepareStatement(SQLQueries.ADD_COURSE);
 			stmt.setString(1, courseId);
 			stmt.setInt(2, studentId);
-			stmt.setString(3, "Z");
+			stmt.setString(3, "NOT_GRADED");
 			stmt.executeUpdate();
 			return true;
 		}
@@ -86,9 +88,37 @@ public class StudentDaoImplementation implements StudentDaoInterface {
 	}
 
 	@Override
-	public Course[] viewRegisteredCourses(int studentId) {
-		// TODO Auto-generated method stub
-		return null;
+	public ReportCard viewRegisteredCourses(int studentId) throws SQLException {
+		Connection conn = DBUtils.getConnection();
+		Hashtable<String, Grade> grades = new Hashtable<String, Grade>();
+		ReportCard student_report;
+		try
+		{
+			stmt = conn.prepareStatement(SQLQueries.GET_GRADES);
+			stmt.setInt(1, studentId);
+			ResultSet rs = stmt.executeQuery();
+			
+			while(rs.next())
+			{
+				String course = rs.getString("courseid");
+				Grade grade = Grade.valueOf(rs.getString("grade"));
+				grades.put(course, grade);
+				
+			}
+			student_report = new ReportCard(studentId, grades);
+			return student_report;
+		}
+		catch(Exception e)
+		{
+			System.out.println(e.getMessage());
+		}
+		finally
+		{
+			stmt.close();
+			//conn.close();
+		}
+		
+		return new ReportCard(0,new Hashtable<String,Grade>());
 	}
 
 	@Override

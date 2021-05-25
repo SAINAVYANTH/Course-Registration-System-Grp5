@@ -13,6 +13,6 @@ public interface StudentInterface {
 	public Status semesterRegistration(int studentId, CourseRegistration courses);
 	public  boolean addCourse(int studentId, String courseId) throws InvalidCourseId, RegistrationFailure, SQLException;
 	public Status dropCourse(int studentId, String courseId) throws InvalidCourseId, SQLException;
-	public Course[] viewRegisteredCourses(int studentId);
+	public ReportCard viewRegisteredCourses(int studentId) throws SQLException;
 	public ReportCard viewReportCard(int studentId);
 }

@@ -4,8 +4,13 @@
 package com.flipkart.client;
 
 import java.sql.SQLException;
+import java.util.Collection;
+import java.util.Enumeration;
+import java.util.Hashtable;
 import java.util.Scanner;
 
+import com.flipkart.bean.ReportCard;
+import com.flipkart.constants.Grade;
 import com.flipkart.constants.Status;
 import com.flipkart.exception.InvalidCourseId;
 import com.flipkart.exception.RegistrationFailure;
@@ -83,7 +88,17 @@ public class StudentMenuClient {
 	}
 
 	private void viewRegisteredCourses(int student_id) {
-		// TODO Auto-generated method stub
+		try {
+			ReportCard course_list= studentInterface.viewRegisteredCourses(student_id);
+			System.out.println("Showing All Courses and Grades for student_id "+student_id);
+			Hashtable<String, Grade> grades=course_list.getGrades();
+			grades.forEach((key, value)->System.out.println("Course ID : " + key 
+	                + "\t\t" + "Grade : " + value));
+			
+		}
+		catch(SQLException e) {
+			System.out.println(e.getMessage());
+		}
 		
 	}
 
