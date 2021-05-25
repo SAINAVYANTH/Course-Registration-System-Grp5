@@ -11,9 +11,19 @@ import com.flipkart.constants.UserRole;
 import com.flipkart.exception.InvalidCredentialsException;
 import com.flipkart.utils.DBUtils;
 
-public class CredentialsDAO {
+public class CredentialsDAO implements CredentialsDaoInterface{
+private static CredentialsDAO instance = null;
 	
-	public static Status saveCredentials(UserLogin details) {
+	private CredentialsDAO() {};
+	
+	public static CredentialsDAO getInstance() {
+		if (instance == null) {
+			instance = new CredentialsDAO();
+		}
+		return instance;
+	}
+	
+	public Status saveCredentials(UserLogin details) {
 		Connection conn = null;
 		PreparedStatement prep_stmt = null;
 		try {
@@ -34,17 +44,11 @@ public class CredentialsDAO {
 		    	if(prep_stmt!=null)
 		            prep_stmt.close();
 		    }catch(SQLException se2){}
-		    try{
-		        if(conn!=null)
-		            conn.close();
-		    }catch(SQLException se){
-		        se.printStackTrace();
-		    }
 		}
 		return Status.FAIL;
 	}
 	
-	public static UserLogin verifyCredentials(String username, String password) throws InvalidCredentialsException{
+	public UserLogin verifyCredentials(String username, String password) throws InvalidCredentialsException{
 		Connection conn = null;
 		PreparedStatement prep_stmt = null;
 		try {
@@ -54,7 +58,10 @@ public class CredentialsDAO {
 			prep_stmt.setString(1, username);
 			ResultSet result =  prep_stmt.executeQuery();
 			result.absolute(1);
-			if (result.getString(2) == password) {
+			System.out.println(result.getString(1));
+			System.out.println(result.getString(2));
+			System.out.println(result.getString(3));
+			if (password.equals(result.getString(2))) {
 				return new UserLogin(result.getString(1), result.getString(2), UserRole.valueOf(result.getString(3)));
 			}
 			else {
@@ -69,13 +76,32 @@ public class CredentialsDAO {
 		    	if(prep_stmt!=null)
 		            prep_stmt.close();
 		    }catch(SQLException se2){}
-		    try{
-		        if(conn!=null)
-		            conn.close();
-		    }catch(SQLException se){
-		        se.printStackTrace();
-		    }
 		}
 		throw new InvalidCredentialsException("Invalid username " + username);
+	}
+	
+	public Status updateCredentials(String username, String password)  {
+		// TODO Auto-generated method stub
+		Connection conn = null;
+		PreparedStatement prep_stmt = null;
+		try {
+			conn = DBUtils.getConnection();
+			String raw_stmt = "update credentials set password=? where userid=?";
+			prep_stmt = conn.prepareStatement(raw_stmt);
+			prep_stmt.setString(1, password);
+			prep_stmt.setString(2,username);
+		    prep_stmt.executeUpdate();
+		    return Status.SUCCESS;
+		}catch(SQLException se){
+			se.printStackTrace();
+		}catch(Exception e){
+		    e.printStackTrace();
+		}finally{
+			try{
+		    	if(prep_stmt!=null)
+		            prep_stmt.close();
+		    }catch(SQLException se2){}
+		}
+		return Status.FAIL;
 	}
 }

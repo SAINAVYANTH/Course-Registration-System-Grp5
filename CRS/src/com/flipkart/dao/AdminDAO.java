@@ -11,8 +11,19 @@ import com.flipkart.constants.Status;
 import com.flipkart.exception.InvalidAdminIdException;
 import com.flipkart.utils.DBUtils;
 
-public class AdminDAO {
-	public static Status saveAdminDetails(Admin details) {
+public class AdminDAO implements AdminDaoInterface{
+	private static AdminDAO instance = null;
+	
+	private AdminDAO() {};
+	
+	public static AdminDAO getInstance() {
+		if (instance == null) {
+			instance = new AdminDAO();
+		}
+		return instance;
+	}
+	
+	public Status saveAdminDetails(Admin details) {
 		Connection conn = null;
 		PreparedStatement prep_stmt = null;
 		try {
@@ -35,24 +46,18 @@ public class AdminDAO {
 		    	if(prep_stmt!=null)
 		            prep_stmt.close();
 		    }catch(SQLException se2){}
-		    try{
-		        if(conn!=null)
-		            conn.close();
-		    }catch(SQLException se){
-		        se.printStackTrace();
-		    }
 		}
 		return Status.FAIL;
 	}
 	
-	public static Admin getAdminDetails(int id) throws InvalidAdminIdException{
+	public Admin getAdminDetails(String id) throws InvalidAdminIdException{
 		Connection conn = null;
 		PreparedStatement prep_stmt = null;
 		try {
 			conn = DBUtils.getConnection();
 			String raw_stmt = "select * from admins where id=?";
 			prep_stmt = conn.prepareStatement(raw_stmt);
-			prep_stmt.setInt(1, id);
+			prep_stmt.setString(1, id);
 			ResultSet result =  prep_stmt.executeQuery();
 			result.absolute(1);
 			return new Admin(result.getString(1), result.getString(2), result.getDate(3), result.getString(4), 
@@ -66,12 +71,6 @@ public class AdminDAO {
 		    	if(prep_stmt!=null)
 		            prep_stmt.close();
 		    }catch(SQLException se2){}
-		    try{
-		        if(conn!=null)
-		            conn.close();
-		    }catch(SQLException se){
-		        se.printStackTrace();
-		    }
 		}
 		throw new InvalidAdminIdException("Invalid id " + id);
 	}

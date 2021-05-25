@@ -3,9 +3,10 @@ package com.flipkart.client;
 import java.util.Scanner;
 
 import com.flipkart.bean.UserLogin;
-import com.flipkart.exception.InvalidCredentialsException;
 import com.flipkart.utils.LoginUtils;
 import com.flipkart.client.clientProfessor;
+import com.flipkart.constants.Status;
+import com.flipkart.constants.UserRole;
 public class Client {
 
 	public static void main(String[] args) {
@@ -16,7 +17,7 @@ public class Client {
 		int n=1;
 		do {
 			n = sc.nextInt();
-			
+			sc.nextLine();
 			if (n==1) {
 				client.login();
 			}
@@ -27,7 +28,7 @@ public class Client {
 				return;
 			client.MainMenu();
 		}while(n!=3);
-
+		sc.close();
 	}
 	private void login() {
 		// TODO Auto-generated method stub
@@ -38,29 +39,29 @@ public class Client {
 		System.out.println("Enter your password");
 		String userpass = sc.nextLine();
 		
-		
-		boolean state = false;
-		state = LoginUtils.Login(userid,userpass); // Verifying login details!
-		if (state==false) {
+		UserLogin user = LoginUtils.Login(userid,userpass); // Verifying login details!
+		if (user.getUserId().length()==0) {
 			System.out.println("username or password is incorrect");
 			MainMenu();
 		}
 		else {
-			String role = LoginUtils.userRole(userid);
-			if(role.equals("Student")) {
+			UserRole role = user.getRole();
+			if(role.equals(UserRole.STUDENT)) {
 				clientStudent clientstudent = new clientStudent();
 				clientstudent.StudentMenu();
 			}
-			if(role.equals("Professor")) {
+			if(role.equals(UserRole.PROFESSOR)) {
 				clientProfessor clientprof = new clientProfessor();
 				clientprof.ProfMenu();
 			}
-			if(role.equals("Admin")) {
+			if(role.equals(UserRole.ADMIN)) {
 				clientAdmin clientadmin = new clientAdmin();
 				clientadmin.AdminMenu();
 
 			}
 		}
+		sc.close();
+	}
 				/*try {
 					utils.LoginUtils.login(userid, userpass);
 					state = true;
@@ -70,7 +71,6 @@ public class Client {
 				}*/
 				
 		
-	}
 	private void updatepassword() {
 		// TODO Auto-generated method stub
 		System.out.println("Enter user ID");
@@ -79,7 +79,7 @@ public class Client {
 		
 		System.out.println("Enter your old new password");
 		String userpass = sc.nextLine();
-		if(LoginUtils.Login(userid,userpass)){
+		if(LoginUtils.Login(userid,userpass).getUserId().length()!=0){
 			String userpass1,userpass2;
 			do {
 				System.out.println("Enter your new password");
@@ -91,7 +91,13 @@ public class Client {
 			}while(userpass1.equals(userpass2)==false || (userpass1.length()==0));
 			
 			userpass=userpass1;
-			LoginUtils.updatePassword(userid,userpass);
+			if( LoginUtils.updatePassword(userid,userpass) == Status.SUCCESS){
+				System.out.println("Successfully updated Passeword");
+			}
+			MainMenu();
+		}
+		else {
+			
 		}
 	}
 	

@@ -3,6 +3,12 @@ package com.flipkart.service;
 import com.flipkart.bean.Course;
 import com.flipkart.bean.Professor;
 import com.flipkart.bean.Student;
+import com.flipkart.dao.AdminDAO;
+import com.flipkart.dao.AdminDaoInterface;
+import com.flipkart.dao.CourseDAO;
+import com.flipkart.dao.CourseDaoInterface;
+import com.flipkart.dao.ProfessorDAO;
+import com.flipkart.dao.ProfessorDaoInterface;
 import com.flipkart.exception.InvalidCourseIdException;
 import com.flipkart.exception.InvalidProfessorIdException;
 import com.flipkart.exception.InvalidStudentIdException;
@@ -11,20 +17,20 @@ public class AdminImpl implements AdminInterface{
 
 	@Override
 	public void addCourse(Course details) {
-		// TODO Auto-generated method stub
-		
+		CourseDaoInterface courseDao = CourseDAO.getInstance();
+		courseDao.addNewCourse(details);	
 	}
 
 	@Override
 	public void removeCourse(String courseId) throws InvalidCourseIdException{
-		// TODO Auto-generated method stub
-		
+		CourseDaoInterface courseDao = CourseDAO.getInstance();
+		courseDao.removeCourse(courseId);
 	}
 
 	@Override
 	public void addNewProfessor(Professor details) {
-		// TODO Auto-generated method stub
-		
+		ProfessorDaoInterface professorDao = ProfessorDAO.getInstance();
+		professorDao.addProfessor(details);		
 	}
 
 	@Override
@@ -41,8 +47,8 @@ public class AdminImpl implements AdminInterface{
 
 	@Override
 	public void removeProfessor(String id) throws InvalidProfessorIdException{
-		// TODO Auto-generated method stub
-		
+		ProfessorDaoInterface professorDao = ProfessorDAO.getInstance();
+		professorDao.removeProfessor(id);
 	}
 
 	@Override

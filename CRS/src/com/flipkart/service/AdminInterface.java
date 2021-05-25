@@ -9,19 +9,19 @@ import com.flipkart.exception.InvalidStudentIdException;
 
 public interface AdminInterface {
 	
-	/* function to add a course
+	/* function to add a course to the catalog
 	 * @param Course details
 	 * */
 	public void addCourse(Course details);
 	
-	/* function to remove a course
+	/* function to remove a course from the catalog
 	 * @param String courseId
+	 * @throws InvalidCourseIdException
 	 * */
 	public void removeCourse(String courseId) throws InvalidCourseIdException;
 	
 	/* function to add a new professor to the database
 	 * @param Professor details
-	 * @throws InvalidCourseIdException
 	 * */
 	public void addNewProfessor(Professor details);
 	

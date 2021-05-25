@@ -11,9 +11,20 @@ import com.flipkart.constants.Status;
 import com.flipkart.exception.InvalidProfessorIdException;
 import com.flipkart.utils.DBUtils;
 
-public class ProfessorDAO {
+public class ProfessorDAO implements ProfessorDaoInterface{
+private static ProfessorDAO instance = null;
 	
-	public static Status saveProfessorDetails(Professor details) {
+	private ProfessorDAO() {};
+	
+	public static ProfessorDAO getInstance() {
+		if (instance == null) {
+			instance = new ProfessorDAO();
+		}
+		return instance;
+	}
+	
+	
+	public Status addProfessor(Professor details) {
 		Connection conn = null;
 		PreparedStatement prep_stmt = null;
 		try {
@@ -38,24 +49,41 @@ public class ProfessorDAO {
 		    	if(prep_stmt!=null)
 		            prep_stmt.close();
 		    }catch(SQLException se2){}
-		    try{
-		        if(conn!=null)
-		            conn.close();
-		    }catch(SQLException se){
-		        se.printStackTrace();
-		    }
 		}
 		return Status.FAIL;
 	}
 	
-	public static Professor getProfessorDetails(int id) throws InvalidProfessorIdException {
+	public Status removeProfessor(String id) throws InvalidProfessorIdException{
 		Connection conn = null;
 		PreparedStatement prep_stmt = null;
 		try {
 			conn = DBUtils.getConnection();
 			String raw_stmt = "select * from professors where id=?";
 			prep_stmt = conn.prepareStatement(raw_stmt);
-			prep_stmt.setInt(1, id);
+			prep_stmt.setString(1, id);
+			prep_stmt.executeUpdate();
+			return Status.SUCCESS;
+		}catch(SQLException se){
+			se.printStackTrace();
+		}catch(Exception e){
+		    e.printStackTrace();
+		}finally{
+			try{
+		    	if(prep_stmt!=null)
+		            prep_stmt.close();
+		    }catch(SQLException se2){}
+		}
+		throw new InvalidProfessorIdException("Invalid id " + id);
+	}
+	
+	public Professor getProfessorDetails(String id) throws InvalidProfessorIdException {
+		Connection conn = null;
+		PreparedStatement prep_stmt = null;
+		try {
+			conn = DBUtils.getConnection();
+			String raw_stmt = "select * from professors where id=?";
+			prep_stmt = conn.prepareStatement(raw_stmt);
+			prep_stmt.setString(1, id);
 			ResultSet result =  prep_stmt.executeQuery();
 			result.absolute(1);
 			return new Professor(result.getString(1), result.getString(2), result.getDate(3), result.getString(4), 
@@ -69,12 +97,6 @@ public class ProfessorDAO {
 		    	if(prep_stmt!=null)
 		            prep_stmt.close();
 		    }catch(SQLException se2){}
-		    try{
-		        if(conn!=null)
-		            conn.close();
-		    }catch(SQLException se){
-		        se.printStackTrace();
-		    }
 		}
 		throw new InvalidProfessorIdException("Invalid id " + id);
 	}

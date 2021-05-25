@@ -1,6 +1,13 @@
 package com.flipkart.bean;
 
 public class Course {
+	public Course(String courseId, String courseName, String instructor) {
+		super();
+		this.courseName = courseName;
+		this.courseId = courseId;
+		this.instructor = instructor;
+	}
+	
 	private String courseName;
 	private String courseId;
 	private String instructor;
