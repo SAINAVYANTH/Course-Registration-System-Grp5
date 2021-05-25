@@ -7,7 +7,7 @@ public class CourseUtils {
 		return new Course[] {};
 	}
 	
-	public static Course getCourseDetails(String courseId) {
+	public static void getCourseDetails(String courseId) {
 		
 	}
 }

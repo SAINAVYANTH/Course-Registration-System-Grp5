@@ -6,7 +6,10 @@ import com.flipkart.bean.Student;
 
 public interface AdminInterface {
 	public void addCourse(Course details);
-	public void removeCourse(String courseId);
+	public static void removeCourse(String courseId) {
+		// TODO Auto-generated method stub
+		
+	}
 	public void addNewProfessor(Professor details);
 	public void addNewStudent(Student details);
 	public void removeStudent(String id);

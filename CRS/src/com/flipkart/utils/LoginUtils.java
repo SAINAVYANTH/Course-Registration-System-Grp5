@@ -1,13 +1,21 @@
 package com.flipkart.utils;
 
-import com.flipkart.bean.UserLogin;
-
 public class LoginUtils {
-	public static UserLogin login(String username, String password) {
-		
+	public static boolean Login(String username, String password) {
+		// Function call here...
+		return true;
+	}
+	public static void updatePassword(String username, String password) {
+		// Function call here...
+	
+	}
+	public static String userRole(String username) {
+		// Function call here...
+		return "Student";
+	}
+	public static String getpassword(String username) {
+		// DB call
+		return "password";
 	}
 	
-	public void logout() {
-		
-	}
 }
