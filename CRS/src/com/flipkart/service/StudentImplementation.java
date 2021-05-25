@@ -9,11 +9,10 @@ import com.flipkart.bean.Course;
 import com.flipkart.bean.CourseRegistration;
 import com.flipkart.bean.ReportCard;
 import com.flipkart.constants.Status;
+import com.flipkart.dao.StudentDaoImplementation;
+import com.flipkart.dao.StudentDaoInterface;
 import com.flipkart.exception.InvalidCourseId;
 import com.flipkart.exception.RegistrationFailure;
-
-import dao.StudentDaoImplementation;
-import dao.StudentDaoInterface;
 
 /**
  * @author Rohit

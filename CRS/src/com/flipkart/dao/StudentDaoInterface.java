@@ -1,4 +1,4 @@
-package dao;
+package com.flipkart.dao;
 
 import java.sql.SQLException;
 
