@@ -1,9 +1,10 @@
 package com.flipkart.client;
 
 public class Client {
-
+	static boolean logged_in=true;
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+		StudentMenuClient smc= new StudentMenuClient();
+		smc.create_menu(0);
 
 	}
 

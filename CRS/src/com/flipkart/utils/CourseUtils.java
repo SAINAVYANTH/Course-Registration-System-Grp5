@@ -8,6 +8,6 @@ public class CourseUtils {
 	}
 	
 	public static Course getCourseDetails(String courseId) {
-		
+		return new Course();
 	}
 }
