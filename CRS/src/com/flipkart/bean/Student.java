@@ -1,6 +1,17 @@
 package com.flipkart.bean;
 
+import java.util.Date;
+
 public class Student extends PersonalDetails{
+	
+	public Student(String id, String name, Date dob, String email, String address, String rollNo, String department,
+			String yearOfJoining) {
+		super(id, name, dob, email, address);
+		this.rollNo = rollNo;
+		this.department = department;
+		this.yearOfJoining = yearOfJoining;
+	}
+	
 	private String rollNo;
 	private String department;
 	private String yearOfJoining;

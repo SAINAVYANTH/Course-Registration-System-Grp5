@@ -1,12 +1,23 @@
 package com.flipkart.bean;
 
+import java.util.Date;
+
 public class PersonalDetails {
+	
+	public PersonalDetails( String id, String name, Date dob, String email, String address) {
+		super();
+		this.name = name;
+		this.id = id;
+		this.dob = dob;
+		this.email = email;
+		this.address = address;
+	}
+	
 	private String name;
 	private String id;
-	private String dob;
+	private Date dob;
 	private String email;
 	private String address;
-	private UserLogin loginDetails;
 	
 	public String getName() {
 		return name;
@@ -20,10 +31,10 @@ public class PersonalDetails {
 	public void setId(String id) {
 		this.id = id;
 	}
-	public String getDob() {
+	public Date getDob() {
 		return dob;
 	}
-	public void setDob(String dob) {
+	public void setDob(Date dob) {
 		this.dob = dob;
 	}
 	public String getEmail() {
@@ -37,11 +48,5 @@ public class PersonalDetails {
 	}
 	public void setAddress(String address) {
 		this.address = address;
-	}
-	public UserLogin getLoginDetails() {
-		return loginDetails;
-	}
-	public void setLoginDetails(UserLogin loginDetails) {
-		this.loginDetails = loginDetails;
 	}
 }

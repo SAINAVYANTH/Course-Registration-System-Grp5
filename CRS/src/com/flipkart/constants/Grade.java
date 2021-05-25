@@ -7,5 +7,6 @@ public enum Grade {
 	B2,
 	C1,
 	C2,
-	D
+	D,
+	PENDING
 }

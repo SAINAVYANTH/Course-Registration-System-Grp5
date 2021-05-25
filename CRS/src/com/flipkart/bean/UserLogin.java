@@ -3,6 +3,13 @@ package com.flipkart.bean;
 import com.flipkart.constants.UserRole;
 
 public class UserLogin {
+	
+	public UserLogin(String userId, String password, UserRole role) {
+		this.userId = userId;
+		this.password = password;
+		this.role = role;
+	}
+	
 	private String userId;
 	private String password;
 	private UserRole role;
