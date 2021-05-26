@@ -20,7 +20,7 @@ public class clientProfessor {
 	
 	public void ProfMenu() {
 		System.out.println("Press 1 to offer course");
-		System.out.println("Press 2 to view courses");
+		System.out.println("Press 2 to view teaching courses");
 		System.out.println("Press 3 to view enrolled students");
 		System.out.println("Press 4 to give grades");
 		System.out.println("Press 5 to exit");
@@ -58,10 +58,8 @@ public class clientProfessor {
 				}
 			}
 			else if (n==4) {
-				System.out.println("Enter the id");
+				System.out.println("Enter the course id");
 				String cid = sc.nextLine();
-				System.out.println("Enter the course name");
-				String cname = sc.nextLine();
 				System.out.println("Enter the grades");
 				System.out.println("enter END to stop giving grades");
 				Hashtable<String, Grade> grade= new Hashtable<String, Grade>();
@@ -74,12 +72,12 @@ public class clientProfessor {
 					System.out.println("Enter the grade");
 					String sgrade = sc.nextLine();
 					grade.put(sid, Grade.valueOf(sgrade));
-				}
-				try {
-					profinterface.giveGrades(cid,cname,grade);
-				} catch (InvalidGradeException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					try {
+						profinterface.giveGrades(cid,cid,grade);
+					} catch (InvalidGradeException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
 			}
 			else if (n==5) {

@@ -58,9 +58,7 @@ private static CredentialsDAO instance = null;
 			prep_stmt.setString(1, username);
 			ResultSet result =  prep_stmt.executeQuery();
 			result.absolute(1);
-			System.out.println(result.getString(1));
-			System.out.println(result.getString(2));
-			System.out.println(result.getString(3));
+			System.out.println("Role:" + result.getString(3));
 			if (password.equals(result.getString(2))) {
 				return new UserLogin(result.getString(1), result.getString(2), UserRole.valueOf(result.getString(3)));
 			}

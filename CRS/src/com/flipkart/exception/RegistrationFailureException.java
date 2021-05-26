@@ -8,6 +8,12 @@ public class RegistrationFailureException extends Exception{
 		this.exception = exception;
 		this.registrationDetails = registrationDetails;
 	}
+	
+	public RegistrationFailureException(String exception) {
+		super();
+		this.exception = exception;
+		this.registrationDetails = null;
+	}
 	/**
 	 * 
 	 */

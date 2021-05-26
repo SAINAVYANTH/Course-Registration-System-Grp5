@@ -122,4 +122,28 @@ public class CourseDAO implements CourseDaoInterface{
 		}
 		return new ArrayList<Course>();
 	}
+	
+	public Status updateCourseDetails(String id, String courseId){
+		Connection conn = null;
+		PreparedStatement prep_stmt = null;
+		try {
+			conn = DBUtils.getConnection();
+			String raw_stmt = "update courses set instructor=?  where courseid=?";
+			prep_stmt = conn.prepareStatement(raw_stmt);	
+			prep_stmt.setString(1, id);
+			prep_stmt.setString(2, courseId);
+			prep_stmt.executeUpdate();
+			return Status.SUCCESS;
+		}catch(SQLException se){
+			se.printStackTrace();
+		}catch(Exception e){
+		    e.printStackTrace();
+		}finally{
+			try{
+		    	if(prep_stmt!=null)
+		            prep_stmt.close();
+		    }catch(SQLException se2){}
+		}
+		return Status.FAIL;
+	}
 }
