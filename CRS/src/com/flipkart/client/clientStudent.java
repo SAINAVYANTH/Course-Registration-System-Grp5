@@ -53,5 +53,6 @@ public class clientStudent {
 				
 			StudentMenu();
 		}while(n!=7);
+		sc.close();
 	}
 }

@@ -7,7 +7,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import com.flipkart.bean.Admin;
+import com.flipkart.bean.UserLogin;
 import com.flipkart.constants.Status;
+import com.flipkart.constants.UserRole;
 import com.flipkart.exception.InvalidAdminIdException;
 import com.flipkart.utils.DBUtils;
 
@@ -36,6 +38,8 @@ public class AdminDAO implements AdminDaoInterface{
 			prep_stmt.setString(4, details.getEmail());
 			prep_stmt.setString(5, details.getAddress());
 			prep_stmt.executeUpdate();
+			CredentialsDaoInterface credentialsDao = CredentialsDAO.getInstance();
+			credentialsDao.saveCredentials(new UserLogin(details.getId(), details.getId(), UserRole.ADMIN));
 			return Status.SUCCESS;
 		}catch(SQLException se){
 			se.printStackTrace();

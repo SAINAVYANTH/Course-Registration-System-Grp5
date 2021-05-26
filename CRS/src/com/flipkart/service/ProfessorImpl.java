@@ -9,6 +9,8 @@ import com.flipkart.constants.Grade;
 import com.flipkart.constants.Status;
 import com.flipkart.dao.CourseDAO;
 import com.flipkart.dao.CourseDaoInterface;
+import com.flipkart.dao.RegistrationDAO;
+import com.flipkart.dao.RegistrationDaoInterface;
 import com.flipkart.exception.InvalidCourseIdException;
 import com.flipkart.exception.InvalidGradeException;
 
@@ -16,8 +18,8 @@ public class ProfessorImpl implements ProfessorInterface{
 
 	@Override
 	public Status teachCourse(String id, String courseId) {
-		// TODO Auto-generated method stub
-		return Status.SUCCESS;
+		CourseDaoInterface courseDao = CourseDAO.getInstance();
+		return courseDao.updateCourseDetails(id, courseId);
 	}
 
 	@Override
@@ -27,15 +29,15 @@ public class ProfessorImpl implements ProfessorInterface{
 	}
 
 	@Override
-	public Student[] viewEnrolledStudents(String id, String courseId) throws InvalidCourseIdException {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Student> viewEnrolledStudents(String id, String courseId) throws InvalidCourseIdException {
+		RegistrationDaoInterface registrationDao = RegistrationDAO.getInstance();
+		return registrationDao.viewEnrolledStudents(courseId);
 	}
 
 	@Override
 	public void giveGrades(String id, String courseId, Hashtable<String, Grade> grades) throws InvalidGradeException {
-		// TODO Auto-generated method stub
-		
+		RegistrationDaoInterface registrationDao = RegistrationDAO.getInstance();
+		registrationDao.addGrade(courseId, grades);
 	}
 
 }

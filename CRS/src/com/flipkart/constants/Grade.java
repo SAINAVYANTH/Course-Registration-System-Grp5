@@ -8,5 +8,5 @@ public enum Grade {
 	C1,
 	C2,
 	D,
-	PENDING
+	NOT_GRADED
 }

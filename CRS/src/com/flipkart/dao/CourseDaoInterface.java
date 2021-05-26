@@ -11,4 +11,5 @@ public interface CourseDaoInterface {
 	public Course getCourseDetails(String courseId) throws InvalidCourseIdException;
 	public List<Course> getCourseList();
 	public Status removeCourse(String courseId) throws InvalidCourseIdException;
+	public Status updateCourseDetails(String id, String courseId);
 }

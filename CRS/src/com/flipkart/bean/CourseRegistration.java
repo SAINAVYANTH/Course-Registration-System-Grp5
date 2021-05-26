@@ -1,6 +1,13 @@
 package com.flipkart.bean;
 
 public class CourseRegistration {
+	
+	public CourseRegistration(Course[] primaryCourses, Course[] secondaryCourses) {
+		super();
+		this.primaryCourses = primaryCourses;
+		this.secondaryCourses = secondaryCourses;
+	}
+	
 	private Course[] primaryCourses;
 	private Course[] secondaryCourses;
 	private String semester;

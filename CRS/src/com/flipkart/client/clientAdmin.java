@@ -48,9 +48,7 @@ public class clientAdmin {
 				System.out.println("Enter the course name");
 				inp = sc.nextLine();
 				course.setCourseName(inp);
-				System.out.println("Enter the Name of Instructor");
-				inp = sc.nextLine();
-				course.setInstructor(inp);
+				course.setInstructor("Instructor NA");
 				admininterface.addCourse(course);
 				
 			}
@@ -94,11 +92,11 @@ public class clientAdmin {
 				System.out.println("Enter the id");
 				student.setId(sc.nextLine());
 				System.out.println("Enter the dob");
-				student.setName(sc.nextLine());
+				student.setDob(new Date(12,3,2000));
 				System.out.println("Enter the email");
-				student.setName(sc.nextLine());
+				student.setEmail(sc.nextLine());
 				System.out.println("Enter the address");
-				student.setName(sc.nextLine());
+				student.setAddress(sc.nextLine());
 				System.out.println("Enter the department");
 				student.setDepartment(sc.nextLine());
 				System.out.println("Enter the Roll number");

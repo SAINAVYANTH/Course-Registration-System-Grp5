@@ -30,6 +30,7 @@ public class Client {
 		}while(n!=3);
 		sc.close();
 	}
+	
 	private void login() {
 		// TODO Auto-generated method stub
 		System.out.println("Enter user ID");
@@ -47,8 +48,8 @@ public class Client {
 		else {
 			UserRole role = user.getRole();
 			if(role.equals(UserRole.STUDENT)) {
-				clientStudent clientstudent = new clientStudent();
-				clientstudent.StudentMenu();
+				StudentMenuClient smc= new StudentMenuClient();
+				smc.create_menu(user.getUserId());
 			}
 			if(role.equals(UserRole.PROFESSOR)) {
 				clientProfessor clientprof = new clientProfessor();

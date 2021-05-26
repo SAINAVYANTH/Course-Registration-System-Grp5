@@ -7,7 +7,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import com.flipkart.bean.Professor;
+import com.flipkart.bean.UserLogin;
 import com.flipkart.constants.Status;
+import com.flipkart.constants.UserRole;
 import com.flipkart.exception.InvalidProfessorIdException;
 import com.flipkart.utils.DBUtils;
 
@@ -39,6 +41,8 @@ private static ProfessorDAO instance = null;
 			prep_stmt.setString(6, details.getDepartment());
 			prep_stmt.setString(7, details.getDesignation());
 			prep_stmt.executeUpdate();
+			CredentialsDaoInterface credentialsDao = CredentialsDAO.getInstance();
+			credentialsDao.saveCredentials(new UserLogin(details.getId(), details.getId(), UserRole.PROFESSOR));
 			return Status.SUCCESS;
 		}catch(SQLException se){
 			se.printStackTrace();

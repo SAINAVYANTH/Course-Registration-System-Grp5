@@ -1,17 +1,11 @@
 package com.flipkart.dao;
 
-import java.sql.SQLException;
-
-import com.flipkart.bean.CourseRegistration;
-import com.flipkart.bean.ReportCard;
+import com.flipkart.bean.Student;
 import com.flipkart.constants.Status;
+import com.flipkart.exception.InvalidStudentIdException;
 
 public interface StudentDaoInterface {
-	public Status semesterRegistration(String studentId, CourseRegistration courses);
-	public  boolean addCourse(String studentId, String courseId) throws SQLException;
-	public Status dropCourse(String studentId, String courseId) throws SQLException;
-	public ReportCard viewRegisteredCourses(String studentId) throws SQLException;
-	public ReportCard viewReportCard(String studentId);
-	public boolean isRegistered(String courseId, String studentId) throws SQLException;
-	public int numOfRegisteredCourses(String studentId) throws SQLException;
+	public Student getStudentDetails(String studentId) throws InvalidStudentIdException;
+	public Status deleteStudent(String studentID) throws InvalidStudentIdException;
+	public Status addStudent(Student student);
 }

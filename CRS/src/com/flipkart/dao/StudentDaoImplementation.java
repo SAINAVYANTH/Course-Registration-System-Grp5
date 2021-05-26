@@ -1,17 +1,26 @@
 package com.flipkart.dao;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.List;
 
 import com.flipkart.bean.Course;
 import com.flipkart.bean.CourseRegistration;
+import com.flipkart.bean.Professor;
 import com.flipkart.bean.ReportCard;
+import com.flipkart.bean.Student;
+import com.flipkart.bean.UserLogin;
 import com.flipkart.constants.Grade;
 import com.flipkart.constants.SQLQueries;
 import com.flipkart.constants.Status;
+import com.flipkart.constants.UserRole;
+import com.flipkart.exception.InvalidProfessorIdException;
+import com.flipkart.exception.InvalidStudentIdException;
 import com.flipkart.utils.DBUtils;
 
 public class StudentDaoImplementation implements StudentDaoInterface {
@@ -29,161 +38,85 @@ public class StudentDaoImplementation implements StudentDaoInterface {
 		return instance;
 	}
 	
-	@Override
-	public Status semesterRegistration(String studentId, CourseRegistration courses) {
+	@SuppressWarnings("deprecation")
+	public Status addStudent(Student student) {
 		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public boolean addCourse(String studentId, String courseId) throws SQLException {
-		Connection conn = DBUtils.getConnection();
-		try 
-		{
-			stmt = conn.prepareStatement(SQLQueries.ADD_COURSE);
-			stmt.setString(1, courseId);
-			stmt.setString(2, studentId);
-			stmt.setString(3, "NOT_GRADED");
-			stmt.executeUpdate();
-			return true;
-		}
-		catch (SQLException e) 
-		{
-			System.out.println(e.getMessage());
-		}
-		finally
-		{
-			stmt.close();
-			//conn.close();
-		}
-		return false;
-	}
-
-	@Override
-	public Status dropCourse(String studentId, String courseId) throws SQLException {
-		Connection conn = DBUtils.getConnection();
-		
-		try
-		{
-			stmt = conn.prepareStatement(SQLQueries.DROP_COURSE);
-			stmt.setString(1, courseId);
-			stmt.setString(2, studentId);
-			stmt.execute();
-			stmt.close();
-			
+		Connection conn = null;
+		PreparedStatement prep_stmt = null;
+		try {
+			conn = DBUtils.getConnection();
+			String raw_stmt = "insert into students values(?,?,?,?,?,?,?,?)";
+			prep_stmt = conn.prepareStatement(raw_stmt);
+			prep_stmt.setString(1, student.getId());
+			prep_stmt.setString(2, student.getName());
+			prep_stmt.setDate(3, new Date(12,3,2000));
+			prep_stmt.setString(4, student.getEmail());
+			prep_stmt.setString(5, student.getAddress());
+			prep_stmt.setString(6, student.getRollNo());
+			prep_stmt.setString(7, student.getDepartment());
+			prep_stmt.setString(8, student.getYearOfJoining());
+			prep_stmt.executeUpdate();
+			CredentialsDaoInterface credentialsDao = CredentialsDAO.getInstance();
+			credentialsDao.saveCredentials(new UserLogin(student.getId(), student.getId(), UserRole.STUDENT));
 			return Status.SUCCESS;
+		}catch(SQLException se){
+			se.printStackTrace();
+		}catch(Exception e){
+		    e.printStackTrace();
+		}finally{
+			try{
+		    	if(prep_stmt!=null)
+		            prep_stmt.close();
+		    }catch(SQLException se2){}
 		}
-		catch(Exception e)
-		{
-			System.out.println(e.getMessage());
-		}
-		finally
-		{
-
-			stmt.close();
-			//conn.close();
-		}
-		
 		return Status.FAIL;
 	}
-
-	@Override
-	public ReportCard viewRegisteredCourses(String studentId) throws SQLException {
-		Connection conn = DBUtils.getConnection();
-		Hashtable<String, Grade> grades = new Hashtable<String, Grade>();
-		ReportCard student_report;
-		try
-		{
-			stmt = conn.prepareStatement(SQLQueries.GET_GRADES);
-			stmt.setString(1, studentId);
-			ResultSet rs = stmt.executeQuery();
-			
-			while(rs.next())
-			{
-				String course = rs.getString("courseid");
-				Grade grade = Grade.valueOf(rs.getString("grade"));
-				grades.put(course, grade);
-				
-			}
-			student_report = new ReportCard(studentId, grades);
-			return student_report;
+	
+	public Student getStudentDetails(String studentId) throws InvalidStudentIdException {
+		Connection conn = null;
+		PreparedStatement prep_stmt = null;
+		try {
+			conn = DBUtils.getConnection();
+			String raw_stmt = "select * from students where id=?";
+			prep_stmt = conn.prepareStatement(raw_stmt);
+			prep_stmt.setString(1, studentId);
+			ResultSet result =  prep_stmt.executeQuery();
+			result.absolute(1);
+			return new Student(result.getString(1), result.getString(2), result.getDate(3), result.getString(4), 
+					result.getString(5), result.getString(6), result.getString(7), result.getString(8));
+		}catch(SQLException se){
+			se.printStackTrace();
+		}catch(Exception e){
+		    e.printStackTrace();
+		}finally{
+			try{
+		    	if(prep_stmt!=null)
+		            prep_stmt.close();
+		    }catch(SQLException se2){}
 		}
-		catch(Exception e)
-		{
-			System.out.println(e.getMessage());
-		}
-		finally
-		{
-			stmt.close();
-			//conn.close();
-		}
-		
-		return new ReportCard("",new Hashtable<String,Grade>());
+		throw new InvalidStudentIdException("Invalid student id " + studentId);
 	}
-
-	@Override
-	public ReportCard viewReportCard(String studentId) {
-		// TODO Auto-generated method stub
-		return null;
+	
+	public Status deleteStudent(String studentID) throws InvalidStudentIdException{
+		Connection conn = null;
+		PreparedStatement prep_stmt = null;
+	    try{
+	    	conn = DBUtils.getConnection();
+	        stmt = conn.prepareStatement("DELETE FROM TABLE STUDENT WHERE ID = ?");
+	        stmt.setString(1, studentID.toString());
+	        stmt.executeUpdate();
+	        RegistrationDaoInterface registrationDao = RegistrationDAO.getInstance();
+	        return registrationDao.clearStudentCourses(studentID);
+	    }catch(SQLException se){
+			se.printStackTrace();
+		}catch(Exception e){
+		    e.printStackTrace();
+		}finally{
+			try{
+		    	if(prep_stmt!=null)
+		            prep_stmt.close();
+		    }catch(SQLException se2){}
+		}
+	    throw new InvalidStudentIdException("Invalid student id " + studentID);
 	}
-
-	@Override
-	public boolean isRegistered(String courseId, String studentId) throws SQLException {
-		Connection conn = DBUtils.getConnection();
-		
-		boolean check = false;
-		try
-		{
-			stmt = conn.prepareStatement(SQLQueries.IS_REGISTERED);
-			stmt.setString(1, courseId);
-			stmt.setString(2, studentId);
-			ResultSet rs = stmt.executeQuery();
-			
-			while(rs.next())
-			{
-				System.out.println(rs.toString());
-				check = true;
-			}
-		}
-		catch(Exception e)
-		{
-			System.out.println(e.getMessage());
-		}
-		finally
-		{
-			stmt.close();
-			//conn.close();
-		}
-		
-		return check;
-	}
-
-	@Override
-	public int numOfRegisteredCourses(String studentId) throws SQLException{
-Connection conn = DBUtils.getConnection();
-		
-		int registered_course_count = 0;
-		try
-		{
-			stmt = conn.prepareStatement(SQLQueries.NUMBER_OF_REGISTERED_COURSES);
-			stmt.setString(1, studentId);
-			ResultSet rs = stmt.executeQuery();	
-			while(rs.next())
-			{
-				registered_course_count+=1;
-			}
-		}
-		catch(Exception e)
-		{
-			System.out.println(e.getMessage());
-		}
-		finally
-		{
-			stmt.close();
-			//conn.close();
-		}
-		
-		return registered_course_count;
-	}
-
 }

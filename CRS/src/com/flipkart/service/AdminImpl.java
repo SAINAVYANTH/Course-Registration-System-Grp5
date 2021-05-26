@@ -9,6 +9,8 @@ import com.flipkart.dao.CourseDAO;
 import com.flipkart.dao.CourseDaoInterface;
 import com.flipkart.dao.ProfessorDAO;
 import com.flipkart.dao.ProfessorDaoInterface;
+import com.flipkart.dao.StudentDaoImplementation;
+import com.flipkart.dao.StudentDaoInterface;
 import com.flipkart.exception.InvalidCourseIdException;
 import com.flipkart.exception.InvalidProfessorIdException;
 import com.flipkart.exception.InvalidStudentIdException;
@@ -35,14 +37,14 @@ public class AdminImpl implements AdminInterface{
 
 	@Override
 	public void addNewStudent(Student details) {
-		// TODO Auto-generated method stub
-		
+		StudentDaoInterface studentDao = StudentDaoImplementation.getInstance();
+		studentDao.addStudent(details);
 	}
 
 	@Override
 	public void removeStudent(String id) throws InvalidStudentIdException{
-		// TODO Auto-generated method stub
-		
+		StudentDaoInterface studentDao = StudentDaoImplementation.getInstance();
+		studentDao.deleteStudent(id);
 	}
 
 	@Override

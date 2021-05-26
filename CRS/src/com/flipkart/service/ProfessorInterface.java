@@ -13,6 +13,6 @@ import com.flipkart.exception.InvalidGradeException;
 public interface ProfessorInterface {
 	public Status teachCourse(String id, String courseId);
 	public List<Course> viewTeachingCourses(String id);
-	public Student[] viewEnrolledStudents(String id, String courseId) throws InvalidCourseIdException;
+	public List<Student> viewEnrolledStudents(String id, String courseId) throws InvalidCourseIdException;
 	public void giveGrades(String id, String courseId, Hashtable<String, Grade> grades) throws InvalidGradeException;
 }
